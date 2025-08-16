@@ -1,0 +1,41 @@
+# Binaries and compiled classes
+*.class
+*.tasty
+*.o
+*.out
+
+# Log files
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Scala CLI build artifacts
+.scala-build/
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Generated native images or packaged JARs
+*.jar
+*.zip
+*.tar.gz
+*.exe
+*.dmg
+
+# IDE project files
+.idea/
+*.iml
+.vscode/
+.project/
+.classpath
+.settings/
+.bloop/
+.metals/
+.bsp/
+project/
+.target/
+target/
