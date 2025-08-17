@@ -1,4 +1,4 @@
-package shopping.basket.domain
+package io.github.adsheada.shopping.basket.application.commands
 
 enum ExecutionMode:
   case PriceBasket

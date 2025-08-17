@@ -1,0 +1,22 @@
+<configuration debug="false">
+  <contextName>shopping-basket</contextName>
+
+  <!-- Reusable pattern (timestamp, level, thread, logger, MDC, message) -->
+  <property name="LOG_PATTERN"
+            value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} %mdc - %msg%n"/>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${LOG_PATTERN}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+
+  <logger name="io.github.adsheada.shopping.basket" level="DEBUG" additivity="false">
+    <appender-ref ref="CONSOLE"/>
+  </logger>
+</configuration>
