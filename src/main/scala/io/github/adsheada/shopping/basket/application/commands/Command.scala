@@ -2,6 +2,7 @@ package io.github.adsheada.shopping.basket.application.commands
 
 import io.github.adsheada.shopping.basket.domain.Basket
 
+/** A user command the application can execute. */
 sealed trait Command:
   def executionMode: ExecutionMode
   def basket: Basket

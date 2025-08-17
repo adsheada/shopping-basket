@@ -1,30 +1,39 @@
 package io.github.adsheada.shopping.basket
 
 import io.github.adsheada.shopping.basket.application.commands.Command
-import io.github.adsheada.shopping.basket.adapters.cli.CliParser
+import io.github.adsheada.shopping.basket.application.{Pricing, Receipt}
+import io.github.adsheada.shopping.basket.adapters.cli._
+import io.github.adsheada.shopping.basket.domain.offers.{Offer,Rules}
 import com.typesafe.scalalogging.LazyLogging
+import scala.util.control.NonFatal
 
-object Main extends LazyLogging {
+object Main extends LazyLogging:
 
-    def main(args: Array[String]): Unit = {
+    /** Testable entrypoint, returns an exit code. */
+    def run(args: Array[String], offers: List[Offer] = Rules.currentOffers): Int =
         try {
             val command = CliParser.parse(args)
 
             // execute the business logic based on ExecutionMode returned from CliParser.parse
             command match {
                 case Command.PriceBasket(basket) =>
-                    
-                    val subtotal: Int = command.basket.subtotalBase()
-                    logger.debug(s"subtotalBase = $subtotal")
-
-                    logger.info(s"Running in PriceBasket mode with items: ${command.basket}")
+                    val receipt: Receipt = Pricing.price(basket, Rules.currentOffers)
+                    ConsoleRenderer.print(receipt)
             }
 
-            logger.info(s"Command executed successfully: $command")
+            logger.debug(s"Command executed successfully: $command")
+            0
         } catch {
             case e: IllegalArgumentException =>
                 logger.error(s"Error: ${e.getMessage}")
                 logger.info("Usage: PriceBasket item1 item2 item3 ...")
+                2
+            case NonFatal(t) =>
+                logger.error("Unexpected failure", t)
+                1 
         }
-    }
-}
+
+    /** JVM entrypoint delegates to the testable runner. */
+    def main(args: Array[String]): Unit =
+        val code = run(args)
+        if code != 0 then println(s"Exited with code $code")

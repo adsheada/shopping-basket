@@ -1,6 +1,6 @@
 package io.github.adsheada.shopping.basket.domain
 
-enum Item(val label: String, val priceBase: Int):
+enum Item(val label: String, val pricePence: Int):
   case Apples extends Item("Apples", 100)
   case Bread  extends Item("Bread",  80)
   case Milk   extends Item("Milk",  130)

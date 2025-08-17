@@ -1,20 +1,19 @@
-/*
 package io.github.adsheada.shopping.basket.domain.offers
 
+import io.github.adsheada.shopping.basket.domain.{Basket,Item}
 
 sealed trait Offer:
-  def discountBase(basket: Basket)(using Catalog): Int
+  def name: String
+  def discountPence(basket: Basket): Int
 
-/** Apples 10% off (item-level) */
 final case class PercentOff(item: Item, percent: Int) extends Offer:
-  def discountBase(b: Basket)(using cat: Catalog): Int =
-    val count = b.counts.getOrElse(item, 0)
-    val unit  = cat.spec(item).basePricePence
-    ((unit * count) * percent) / 100
+  val name = s"${item.label} $percent% off"
+  def discountPence(b: Basket): Int =
+    val n = b.counts.getOrElse(item, 0)
+    (item.pricePence * n * percent) / 100
 
-/** Buy 2 Soup -> Bread half price (basket-level) */
-final case class BuyXGetYHalfPrice(buyItem: Item, buyQty: Int, getItem: Item) extends Offer:
-  def discountBase(b: Basket)(using cat: Catalog): Int =
-    val eligibleBread = math.min(b.counts.getOrElse(getItem, 0), b.counts.getOrElse(buyItem, 0) / buyQty)
-    (cat.spec(getItem).basePricePence / 2) * eligibleBread
-*/
+final case class BuyXGetYHalfPrice(buy: Item, qty: Int, get: Item) extends Offer:
+  val name = s"Buy $qty ${buy.label} get ${get.label} half price"
+  def discountPence(b: Basket): Int =
+    val eligible = math.min(b.counts.getOrElse(get, 0), b.counts.getOrElse(buy, 0) / qty)
+    (get.pricePence / 2) * eligible

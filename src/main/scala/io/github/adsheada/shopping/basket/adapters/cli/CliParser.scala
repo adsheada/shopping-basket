@@ -11,22 +11,24 @@ object CliParser extends LazyLogging:
     throw new IllegalArgumentException(msg)
 
   private val usage =
-    "No command line parameters found. Usage: PriceBasket item1 item2 item3 ..."
+    "Usage: PriceBasket <item1> <item2> ..."
 
   def parse(args: Array[String]): Command =
-    // split mode and items safely
+    // 1) Split mode and items safely
     val (modeStr, rawItems) = args.toList match
-      case Nil           => fail(usage)
+      case Nil           => fail("No command line parameters found. ")
       case m :: Nil      => fail("At least one item must be specified.")
       case m :: itemList => (m, itemList)
 
+    // 2) Normalise items to be checked
     val itemTokens = rawItems.iterator.map(_.trim).filter(_.nonEmpty).toList
 
+    // 3) validate/partition items
     val items:List[Item] = validateItems(itemTokens)
 
     val basket = Basket(items)
 
-    // parse mode and build the Command
+    // 4) parse mode and build the Command
     ExecutionMode.parse(modeStr).fold {
       fail(s"Unknown command: $modeStr. Expected one of: ${ExecutionMode.allValuesString}")
     } {
@@ -43,7 +45,7 @@ object CliParser extends LazyLogging:
           case None       => Right(s)}
 
     if unknownItems.nonEmpty then 
-      logger.warn(s"Unknown item(s) provided: ${unknownItems.mkString(", ")}")
+      logger.warn(s"Unknown item(s) ignored: ${unknownItems.mkString(", ")}")
 
     if knownItems.isEmpty then
       fail("No known items provided. Please provide valid item(s).")

@@ -39,20 +39,18 @@ If not already installed, download and install sbt from [here](https://www.scala
 
 To run the code using sbt from the root directory of this project, changing the basket items to ones you want a price for:
 ```
-sbt 
-run PriceBasket Apples Milk Bread
+sbt "run PriceBasket Apples Milk Bread"
 ```
 
 To build the code:
 ```
-sbt compile
+sbt "compile"
 ```
 
 ### Running the Unit Tests
 To run the test:
 ```
-sbt
-test
+sbt "test"
 ```
 
 ## Support
@@ -65,8 +63,15 @@ To add a new Execution Mode:
 2. Extend the Command object with a new case class
 3. Add the routing in the Main class to point to the new logic
 
-### Currency
-All monetary values are in a base currency unit at the lowest denomination, e.g. Pence for GBP. The currency object provides context and formatting of the currency in use.
+### Updating Offers
+The Offer.scala file provides the kind of offers available. Once defined, the Rules.scala file can define the items receiving the offers and the discount to be applied.
+```
+  val currentOffers: List[Offer] =
+    List(
+      PercentOff(Item.Apples, 10),
+      BuyXGetYHalfPrice(Item.Soup, qty = 2, get = Item.Bread)
+    )
+```
 
 ## Background
 Write a program driven by unit tests that can price a basket of goods taking into account some special offers. 

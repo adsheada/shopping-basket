@@ -16,7 +16,7 @@
     <appender-ref ref="CONSOLE"/>
   </root>
 
-  <logger name="io.github.adsheada.shopping.basket" level="DEBUG" additivity="false">
+  <logger name="io.github.adsheada.shopping.basket" level="INFO" additivity="false">
     <appender-ref ref="CONSOLE"/>
   </logger>
 </configuration>
