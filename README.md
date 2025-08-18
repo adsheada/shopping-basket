@@ -37,15 +37,24 @@ src/main/scala/io/github/adsheada/shopping/basket/
 ### Running the Code
 If not already installed, download and install sbt from [here](https://www.scala-sbt.org/download).
 
-To run the code using sbt from the root directory of this project, changing the basket items to ones you want a price for:
+To run a single PriceBasket calculation using sbt from the project's root directory:
 ```
 sbt "run PriceBasket Apples Milk Bread"
+```
+
+Or to run a batch of basket inputs from the resources scenarios file:
+```
+sbt "run --scenarios classpath:scenarios.txt"
 ```
 
 To build the code:
 ```
 sbt "compile"
 ```
+
+The list of available Items this application can price is available in:
+- \shopping\basket\domain\Item.scala
+
 
 ### Running the Unit Tests
 To run the test:

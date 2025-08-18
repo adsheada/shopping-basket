@@ -12,9 +12,14 @@ object Main extends LazyLogging:
     /** Testable entrypoint, returns an exit code. */
     def run(args: Array[String], offers: List[Offer] = Rules.currentOffers): Int =
         try {
-            val command = CliParser.parse(args)
+            args.toList match
+                case "--scenarios" :: path :: Nil =>                        // Batch mode
+                    return adapters.cli.BatchRunner.runFile(path, offers)
+                case _ => ()
 
-            // execute the business logic based on ExecutionMode returned from CliParser.parse
+
+            // Parse the command line and run the business logic based on ExecutionMode returned
+            val command = CliParser.parse(args)
             command match {
                 case Command.PriceBasket(basket) =>
                     val receipt: Receipt = Pricing.price(basket, Rules.currentOffers)
