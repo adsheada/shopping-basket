@@ -22,7 +22,3 @@ jobs:
           echo "Test from GitHub - $(date)" > test.txt
           gcloud storage cp test.txt gs://homesearch-raw/test/github-test.txt
           echo "✅ Upload successful!"
-          
-      - name: Verify upload
-        run: |
-          gcloud storage cat gs://homesearch-raw/test/github-test.txt
